@@ -17,4 +17,36 @@
 
 - A Dockerfile is a simple text file that contains a list of commands that the client calls when creating an image
 
--
+- `docker build` creates an image from a *Dockerfile*
+
+```python
+# start from base
+FROM ubuntu:18.04
+
+MAINTAINER Prakhar Srivastav <prakhar@prakhar.me>
+
+# install system-wide deps for python and node
+# yqq to suppress output and assume 'yes' to all prompts
+RUN apt-get -yqq update
+RUN apt-get -yqq install python3-pip python3-dev curl gnupg
+RUN curl -sL https://deb.nodesource.com/setup_10.x | bash
+RUN apt-get install -yq nodejs
+
+# copy our application code and set it as current working directory
+#   this causes our commands to be run from here
+ADD flask-app /opt/flask-app
+WORKDIR /opt/flask-app
+
+# fetch app specific deps
+RUN npm install
+RUN npm run build
+RUN pip3 install -r requirements.txt
+
+# expose port
+EXPOSE 5000
+
+# start app
+CMD [ "python3", "./app.py" ]
+```
+
+**Docker Bridge Network** - Uses a software bridge which allows containers connected to the same bridge network to communicate, while providing isolation from containers which are not connected to that bridge network
