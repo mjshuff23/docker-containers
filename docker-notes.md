@@ -27,6 +27,14 @@
 - `docker ps` shows all containers currently running
   - `docker ps -a` shows all containers we've run
 
+- **Common Flags**
+  - `-d` is for detached mode, which means it will run in the background of your terminal
+    - `docker stop <<containerId>>` to stop a detached container
+  - `-P` will publish exposted ports to random ports
+    - `-p` to specify a custom port for client to forward connections to the container
+    - `docker port <<container>>` to see ports running currently
+  - `--name` Give something a name
+
 ## $ Removing Docker Containers
 
 - `docker rm <<containerId>>` to remove a container after use. ID will be echoed on delete
